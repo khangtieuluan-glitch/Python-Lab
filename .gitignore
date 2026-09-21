@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# —— 我的项目补充（官方模板没覆盖的）——
+data/
+*.db
+uploads/
+models/
+.idea/
+.vscode/
