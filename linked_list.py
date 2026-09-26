@@ -54,6 +54,8 @@ class LinkedList:
         self.head = prev            # current 停了，prev 站在最后一个
 # 快慢找中点    
     def middle(self):
+        if self.head is None:
+            return None
         slow = self.head
         fast = self.head
         while fast and fast.next:                 # ← 只剩这一个空，你来补
