@@ -124,6 +124,9 @@ if __name__ == "__main__":
         d.append(x)
     print(d.has_cycle())      # 期望：False
 
+    e = LinkedList()
+    print(e.middle())         # 期望：None（空链表不崩）
+
 
 
 
