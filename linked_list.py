@@ -52,7 +52,7 @@ class LinkedList:
             prev = current          # 3. prev 挪
             current = nxt           # 4. current 挪（依赖第 1 步的备份）
         self.head = prev            # current 停了，prev 站在最后一个
-# 快慢找重点    
+# 快慢找中点    
     def middle(self):
         slow = self.head
         fast = self.head
@@ -60,6 +60,17 @@ class LinkedList:
             slow = slow.next           # 慢的走一步
             fast = fast.next.next      # 快的走两步
         return slow.value              # 循环停时 slow 正好站在中点
+    
+# Floyd 龟兔赛跑、判环
+    def has_cycle(self):
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:     # 和 middle 那行一字不差
+            slow = slow.next
+            fast = fast.next.next
+            if slow is fast:               # ← 它俩撞上了，怎么办？
+                return True
+        return False                  # 能走到这儿，说明 fast 撞到了 None = 有尽头 = 没环
 
 
 # 验证代码
@@ -95,6 +106,22 @@ if __name__ == "__main__":
     for x in [1, 2, 3, 4]:
         b.append(x)
     print(b.middle())      # 期望：3
+
+
+    c = LinkedList()
+    for x in [1, 2, 3, 4]:
+        c.append(x)
+    node = c.head
+    while node.next:          # 走到最后一个
+        node = node.next
+    node.next = c.head        # 让最后一个指回第一个 → 环就成了
+    print(c.has_cycle())      # 期望：True
+
+    d = LinkedList()
+    for x in [1, 2, 3]:
+        d.append(x)
+    print(d.has_cycle())      # 期望：False
+
 
 
 
