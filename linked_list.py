@@ -52,6 +52,15 @@ class LinkedList:
             prev = current          # 3. prev 挪
             current = nxt           # 4. current 挪（依赖第 1 步的备份）
         self.head = prev            # current 停了，prev 站在最后一个
+# 快慢找重点    
+    def middle(self):
+        slow = self.head
+        fast = self.head
+        while fast and fast.next:                 # ← 只剩这一个空，你来补
+            slow = slow.next           # 慢的走一步
+            fast = fast.next.next      # 快的走两步
+        return slow.value              # 循环停时 slow 正好站在中点
+
 
 # 验证代码
 if __name__ == "__main__":
@@ -75,6 +84,18 @@ if __name__ == "__main__":
     print(two)        # 反转前：1 -> 2 -> None
     two.reverse()
     print(two)        # 反转后：2 -> 1 -> None
+    
+    
+    a = LinkedList()
+    for x in [1, 2, 3, 4, 5]:
+        a.append(x)
+    print(a.middle())      # 期望：3
+
+    b = LinkedList()
+    for x in [1, 2, 3, 4]:
+        b.append(x)
+    print(b.middle())      # 期望：3
+
 
 
             
