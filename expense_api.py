@@ -1,4 +1,4 @@
-"""expense_api.py - 把记账工具包成 HTTP 接口。
+r"""expense_api.py - 把记账工具包成 HTTP 接口。
 
 启动：.\venv\Scripts\python.exe -m uvicorn expense_api:app --reload
 打开：http://127.0.0.1:8000/docs
@@ -6,7 +6,8 @@
 
 import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+
 from pydantic import BaseModel, Field
 
 from expense_cli import load_records, save_records
@@ -30,9 +31,12 @@ class Expense(ExpenseIn):
 
 
 @app.get("/expenses")
-def list_expenses():
-    """查全部账目。"""
-    return load_records()
+def list_expenses(keyword: str = ""):
+    """查账目。给了 keyword 就按备注筛选。"""
+    records = load_records()
+    if keyword:
+        records = [r for r in records if keyword in r["note"]]
+    return records
 
 
 @app.get("/summary")
@@ -58,3 +62,17 @@ def create_expense(item: ExpenseIn):
     save_records(records)
 
     return {"status": "created", "record": new_record}
+
+
+
+
+@app.delete("/expenses/{index}")
+def delete_expense(index: int):
+    """按序号删一笔，序号从 0 开始。"""
+    records = load_records()
+    if index < 0 or index >= len(records):
+        raise HTTPException(status_code=404, detail=f"没有第 {index} 笔账")
+    removed = records.pop(index)
+    save_records(records)
+    return {"status": "deleted", "record": removed}
+
