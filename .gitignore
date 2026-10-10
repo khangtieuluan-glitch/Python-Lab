@@ -225,3 +225,5 @@ uploads/
 models/
 .idea/
 .vscode/
+# 记账数据（本地，不进仓库）
+records.json
